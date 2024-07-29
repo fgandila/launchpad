@@ -1,0 +1,12 @@
+deployedGuildAddress: erd1qqqqqqqqqqqqqpgq7rkf7hsj7vk23ccugd7624020dkl6c65satsr78hnj
+divisionSafetyConstant: 10000000000000000000
+farmingToken: UTK-2f80e9
+guildConfigBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-sc-config.wasm
+guildConfigScAddressModel: erd1qqqqqqqqqqqqqpgqgd3qxtu5xpgtl6c9mjfez3pf2pxm9t26satsly5d70
+guildFactoryBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-factory.wasm
+guildFactoryScAddress: erd1qqqqqqqqqqqqqpgq3fh2nfda8m7zzwxxlhd4c9paljjljavfsatsujmrxk
+guildSCBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-sc.wasm
+guildScAddressModel: erd1qqqqqqqqqqqqqpgquk99fcaqnkcw874d2wa356n042q0p9wwsatssucmcc
+perBlockRewardAmount: 40000000000000000
+signingWalletAddress: erd1a2x0azarwsag9svwdn23pjramat7zcjceqd44yh4g7jx4pugkg2s3jwlel
+signingWalletPemPath: ./wallet1.pem

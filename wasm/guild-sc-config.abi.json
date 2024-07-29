@@ -1,0 +1,492 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.81.0-nightly",
+            "commitHash": "4bc39f028d14c24b04dd17dc425432c6ec354536",
+            "commitDate": "2024-06-26",
+            "channel": "Nightly",
+            "short": "rustc 1.81.0-nightly (4bc39f028 2024-06-26)"
+        },
+        "contractCrate": {
+            "name": "guild-sc-config",
+            "version": "0.0.0"
+        },
+        "framework": {
+            "name": "multiversx-sc",
+            "version": "0.50.5"
+        }
+    },
+    "name": "GuildScConfig",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "args",
+                "type": "InitArgs"
+            }
+        ],
+        "outputs": []
+    },
+    "upgradeConstructor": {
+        "inputs": [],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "setMaxStakedTokens",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "max_staked_tokens",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "docs": [
+                "Pairs of (max_stake, apr)",
+                "APR is scaled by two decimals, i.e. 10_000 is 100%",
+                "Last max_stake value must be equal to the init value of max_staked_tokens"
+            ],
+            "name": "addGuildMasterTiers",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "tiers",
+                    "type": "variadic<multi<BigUint,u64>>",
+                    "multi_arg": true
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "docs": [
+                "Pairs of (max_stake, apr)",
+                "APR is scaled by two decimals, i.e. 10_000 is 100%",
+                "Last max_stake value must be equal to the init value of max_staked_tokens"
+            ],
+            "name": "updateGuildMasterTiers",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "tiers",
+                    "type": "variadic<multi<BigUint,u64>>",
+                    "multi_arg": true
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "setGuildMasterTierApr",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "max_stake",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "new_apr",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "docs": [
+                "Pairs of (max_percentage_staked, apr)",
+                "Both percentages are scaled by two decimals, i.e. 10_000 is 100%",
+                "max_percentage_staked must be <= 10_000, and the last one must be 10_000"
+            ],
+            "name": "addUserTiers",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "tiers",
+                    "type": "variadic<multi<u64,u64>>",
+                    "multi_arg": true
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "docs": [
+                "Pairs of (max_percentage_staked, apr)",
+                "Both percentages are scaled by two decimals, i.e. 10_000 is 100%",
+                "max_percentage_staked must be <= 10_000, and the last one must be 10_000"
+            ],
+            "name": "updateUserTiers",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "tiers",
+                    "type": "variadic<multi<u64,u64>>",
+                    "multi_arg": true
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "setUserTierApr",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "max_percentage_staked",
+                    "type": "u64"
+                },
+                {
+                    "name": "new_apr",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getGuildMasterTiers",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<GuildMasterRewardTier>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getUserTiers",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<UserRewardTier>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "setMinStakeUser",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "min_stake",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "setMinStakeGuildMaster",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "min_stake",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "setTotalStakingTokenMinted",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "total_minted",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "increaseStakedTokens",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "decreaseStakedTokens",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "setSecondsPerBlock",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "new_seconds_per_block",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "setPerBlockRewardAmount",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "new_per_block_reward_amount",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "pauseAllGuilds",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "unpauseAllGuilds",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "getMaxStakedTokens",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getMinUnbondEpochsUser",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "getMinUnbondEpochsGuildMaster",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "getMinStakeUser",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getMinStakeGuildMaster",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getTotalStakingTokenMinted",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getTotalStakingTokenStaked",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getBaseFarmTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bytes"
+                }
+            ]
+        },
+        {
+            "name": "getBaseUnbondTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bytes"
+                }
+            ]
+        },
+        {
+            "name": "getBaseTokenDisplayName",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bytes"
+                }
+            ]
+        },
+        {
+            "name": "getTokenDecimals",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u32"
+                }
+            ]
+        },
+        {
+            "name": "getSecondsPerBlock",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "getPerBlockRewardAmount",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "areAllGuildsPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        }
+    ],
+    "esdtAttributes": [],
+    "hasCallback": false,
+    "types": {
+        "GuildMasterRewardTier": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "max_stake",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "apr",
+                    "type": "u64"
+                }
+            ]
+        },
+        "InitArgs": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "total_staking_tokens_minted",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "max_staked_tokens",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "user_unbond_epochs",
+                    "type": "u64"
+                },
+                {
+                    "name": "guild_master_unbond_epochs",
+                    "type": "u64"
+                },
+                {
+                    "name": "min_stake_user",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "min_stake_guild_master",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "base_farm_token_id",
+                    "type": "bytes"
+                },
+                {
+                    "name": "base_unbond_token_id",
+                    "type": "bytes"
+                },
+                {
+                    "name": "base_token_display_name",
+                    "type": "bytes"
+                },
+                {
+                    "name": "tokens_decimals",
+                    "type": "u32"
+                },
+                {
+                    "name": "seconds_per_block",
+                    "type": "u64"
+                },
+                {
+                    "name": "per_block_reward_amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        "UserRewardTier": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "max_percentage_staked",
+                    "type": "u64"
+                },
+                {
+                    "name": "apr",
+                    "type": "u64"
+                }
+            ]
+        }
+    }
+}

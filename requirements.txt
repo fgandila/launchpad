@@ -1,0 +1,5 @@
+ipykernel
+toml
+debugpy
+pyyaml
+multiversx-sdk==0.10.0
