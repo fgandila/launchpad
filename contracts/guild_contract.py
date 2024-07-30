@@ -349,27 +349,6 @@ class GuildContract(BaseFarmContract, BaseBoostedContract):
         logger.debug(f"Arguments: {sc_args}")
         return endpoint_call(proxy, gas_limit, deployer, Address(self.address), "set_minimum_farming_epochs", sc_args)
 
-    def set_boosted_yields_factors(self, deployer: Account, proxy: ProxyNetworkProvider, args: list):
-        """Only V2Boosted.
-        Expecting as args:
-        type[int]: max_rewards_factor
-        type[int]: user_rewards_energy_const
-        type[int]: user_rewards_farm_const
-        type[int]: min_energy_amount
-        type[int]: min_farm_amount
-        """
-        function_purpose = "Set boosted yield factors"
-        logger.info(function_purpose)
-
-        if len(args) != 5:
-            log_unexpected_args(function_purpose, args)
-            return ""
-
-        gas_limit = 70000000
-        sc_args = args
-        logger.debug(f"Arguments: {sc_args}")
-        return endpoint_call(proxy, gas_limit, deployer, Address(self.address), "setBoostedYieldsFactors", sc_args)
-
     def set_lock_epochs(self, deployer: Account, proxy: ProxyNetworkProvider, lock_epochs: int):
         """Only V2Boosted.
         """
@@ -435,6 +414,25 @@ class GuildContract(BaseFarmContract, BaseBoostedContract):
         gas_limit = 10000000
         sc_args = []
         return endpoint_call(proxy, gas_limit, deployer, Address(self.address), "endProduceRewards", sc_args)
+    
+    def is_guild_closing(self, deployer: Account, proxy: ProxyNetworkProvider):
+        function_purpose = "check if the guild is closing"
+        logger.info(function_purpose)
+        
+        gas_limit = 10000000
+        sc_args = []
+        return endpoint_call(proxy, gas_limit, deployer, Address(self.address), "isGuildClosing", sc_args)
+
+    def topup_rewards(self, deployer: Account, proxy: ProxyNetworkProvider, rewards_amount: int):
+        function_purpose = f"Topup rewards in stake contract"
+        logger.info(function_purpose)
+
+        gas_limit = 50000000
+
+        tokens = [ESDTToken(self.farmedToken, 0, rewards_amount)]
+        sc_args = [tokens]
+        return multi_esdt_endpoint_call(function_purpose, proxy, gas_limit, deployer,
+                                        Address(self.address), "topUpRewards", sc_args)
 
     def get_lp_address(self, proxy: ProxyNetworkProvider) -> str:
         data_fetcher = GuildContractDataFetcher(Address(self.address), proxy.url)

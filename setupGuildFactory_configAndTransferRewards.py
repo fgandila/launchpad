@@ -25,7 +25,7 @@ test_address = Address.from_bech32(config["signingWalletAddress"])
 guild_factory_address = Address.from_bech32(config["guildFactoryScAddress"])
 
 # Network provider
-provider = ProxyNetworkProvider("https://proxy-shadowfork-three.elrond.ro")
+provider = ProxyNetworkProvider(config["defaultPROXY"])
 
 # Get account for the signing wallet
 test_account = provider.get_account(test_address)
@@ -66,9 +66,9 @@ init_args = StructValue(
         Field(
             name="min_stake_guild_master", value=BigUIntValue(500000000000000000000000)
         ),
-        Field(name="base_farm_token_id", value=BytesValue(b"UTKFARM")),
-        Field(name="base_unbond_token_id", value=BytesValue(b"UTKUNBND")),
-        Field(name="base_token_display_name", value=BytesValue(b"sUTK")),
+        Field(name="base_farm_token_id", value=BytesValue(b"UTKFARMN")),
+        Field(name="base_unbond_token_id", value=BytesValue(b"UTKUNBNDN")),
+        Field(name="base_token_display_name", value=BytesValue(b"stkUTK")),
         Field(name="tokens_decimals", value=U32Value(18)),
         Field(name="seconds_per_block", value=U64Value(6)),
         Field(name="per_block_reward_amount", value=BigUIntValue(40000000000000000)),

@@ -12,11 +12,11 @@ with open("config_file.yaml", "r") as file:
 
 test_address = Address.from_bech32(config["signingWalletAddress"])
 
-provider = ProxyNetworkProvider("https://proxy-shadowfork-three.elrond.ro")
+provider = ProxyNetworkProvider(config["defaultPROXY"])
 test_account = provider.get_account(test_address)
 network_config = provider.get_network_config()
 signer = UserSigner.from_pem_file(
-    Path("./defi-wallet.pem"),
+    Path(config["signingWalletPemPath"]),
 )
 
 from multiversx_sdk.abi.biguint_value import BigUIntValue
@@ -36,9 +36,9 @@ init_args = StructValue(
         Field(name="guild_master_unbond_epochs", value=U64Value(1)),
         Field(name="min_stake_user", value=BigUIntValue(100)),
         Field(name="min_stake_guild_master", value=BigUIntValue(500000)),
-        Field(name="base_farm_token_id", value=BytesValue(b"UTKFARM")),
-        Field(name="base_unbond_token_id", value=BytesValue(b"UTKUNBND")),
-        Field(name="base_token_display_name", value=BytesValue(b"sUTK")),
+        Field(name="base_farm_token_id", value=BytesValue(b"UTKFARMN")),
+        Field(name="base_unbond_token_id", value=BytesValue(b"UTKUNBNDN")),
+        Field(name="base_token_display_name", value=BytesValue(b"stkUTK")),
         Field(name="tokens_decimals", value=U32Value(18)),
         Field(name="seconds_per_block", value=U64Value(6)),
         Field(name="per_block_reward_amount", value=BigUIntValue(20000)),

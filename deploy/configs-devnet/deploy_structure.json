@@ -512,6 +512,30 @@
             "staking_v2": 5,
             "metastake_token": "METACRTLK",
             "metastake_token_name": "MetaStakedCRTLK"
+        },
+        {
+            "token": 7,
+            "pool_v2": 6,
+            "farm_boosted": 6,
+            "staking_v2": 6,
+            "metastake_token": "METAHTMLK",
+            "metastake_token_name": "MetaStakedHTMLK"
+        },
+        {
+            "token": 8,
+            "pool_v2": 7,
+            "farm_boosted": 7,
+            "staking_v2": 7,
+            "metastake_token": "METATADALK",
+            "metastake_token_name": "MetaStakedTADALK"
+        },
+        {
+            "token": 9,
+            "pool_v2": 8,
+            "farm_boosted": 8,
+            "staking_v2": 8,
+            "metastake_token": "METABOBELK",
+            "metastake_token_name": "MetaStakedBOBERLK"
         }
     ]
 }

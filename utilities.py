@@ -28,8 +28,10 @@ def tx_success(tx, provider: ProxyNetworkProvider):
 
 def get_default_data():
 
+    config_path = Path.cwd().parent.absolute().as_posix() + "/" + "config_file.yaml"
+
     # Read config
-    with open("config_file.yaml", "r") as file:
+    with open(config_path, "r") as file:
         config = yaml.safe_load(file)
 
     # Signing wallet bech32 address
@@ -37,7 +39,7 @@ def get_default_data():
     guild_factory_address = Address.from_bech32(config["guildFactoryScAddress"])
 
     # Network provider
-    provider = ProxyNetworkProvider("https://proxy-shadowfork-three.elrond.ro")
+    provider = ProxyNetworkProvider(config["defaultPROXY"])
 
     # Get account for the signing wallet
     test_account = provider.get_account(test_address)

@@ -1,6 +1,6 @@
 deployedGuildAddress: ""
 # Farming token ticker
-farmingToken: UTKT1-ab75ee
+farmingToken: TESTUTK-477d07
 
 # Models for guild and guild config needed in factory and guild deployments
 guildConfigScAddressModel: erd1qqqqqqqqqqqqqpgqxvuhv3hk7wx6vt2wm56jm70vknyvwx74zeus7l7puc

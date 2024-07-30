@@ -1,0 +1,14 @@
+defaultAPI: https://express-api-shadowfork-three.elrond.ro
+defaultPROXY: https://proxy-shadowfork-three.elrond.ro
+deployedGuildAddress: erd1qqqqqqqqqqqqqpgqvz67kj60elu7qc93gjcslgnh4ylac9dckg2smvafw3
+divisionSafetyConstant: 10000000000000000000
+farmingToken: TESTUTK-477d07
+guildConfigBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-sc-config.wasm
+guildConfigScAddressModel: erd1qqqqqqqqqqqqqpgqr0sfj94kn0nyt266sfjk5lkzxj0sw5jhkg2s2nh5mr
+guildFactoryBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-factory.wasm
+guildFactoryScAddress: erd1qqqqqqqqqqqqqpgq3y82nwx085s6w0gx4t38qmvavc8h7lgwkg2sdmxdl3
+guildSCBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-sc.wasm
+guildScAddressModel: erd1qqqqqqqqqqqqqpgqxt2qrf7yxsjhwu06zw5kcxgwjxxfmgh6kg2sv8vldx
+perBlockRewardAmount: 40000000000000000
+signingWalletAddress: erd1a2x0azarwsag9svwdn23pjramat7zcjceqd44yh4g7jx4pugkg2s3jwlel
+signingWalletPemPath: ./defi-wallet.pem

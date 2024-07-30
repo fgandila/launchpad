@@ -12,23 +12,19 @@ from trackers.pair_economics_tracking import PairEconomics
 from trackers.staking_economics_tracking import StakingEconomics
 from events.farm_events import EnterFarmEvent, ClaimRewardsFarmEvent, ExitFarmEvent
 from utils.utils_chain import decode_merged_attributes, base64_to_hex
-from contracts.pair_contract import PairContract, RemoveLiquidityEvent, SetCorrectReservesEvent
 
 
 class MetastakingEconomics(Subscriber):
     def __init__(self, contract_address: str, staking_address: str, farm_contract: FarmContract,
-                 pair_contract: PairContract, network_provider: NetworkProviders):
+                  network_provider: NetworkProviders):
         self.contract_address = Address(contract_address, "erd")
         self.farm_contract = farm_contract
-        self.pair_contract = pair_contract
         self.network_provider = network_provider
         self.data_fetcher = MetaStakingContractDataFetcher(self.contract_address, self.network_provider.proxy.url)
         self.chain_data_fetcher = ChainDataFetcher(self.network_provider.proxy.url)
 
         self.staking_tracker = StakingEconomics(staking_address, self.network_provider)
         self.farm_tracker = FarmEconomics(farm_contract.address, farm_contract.version, self.network_provider)
-        self.pair_tracker = PairEconomics(pair_contract.address, pair_contract.firstToken, pair_contract.secondToken,
-                                          self.network_provider)
         self.staking_tracker.report_current_tracking_data()
 
     def check_enter_metastaking_data(self, publisher: Observable):

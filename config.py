@@ -4,9 +4,9 @@ HOME = Path().home()
 DEFAULT_WORKSPACE = Path(__file__).parent
 
 # ------------ For normal operation, modify below ------------ #
-# Used net
+
 DEFAULT_PROXY = "https://proxy-shadowfork-three.elrond.ro"                     # Proxy to be used for ALL operations
-DEFAULT_API = "https://express-api-shadowfork-three.elrond.ro"                           # API to be used for ALL operations
+DEFAULT_API = "https://express-api-shadowfork-three.elrond.ro"                              # API to be used for ALL operations
 GRAPHQL = 'https://graph.xexchange.com/graphql'                              # GraphQL service; only needed for the upgrader scripts
 HISTORY_PROXY = ""                                                          # Proxy to be used for history operations; not used for the moment
 # TODO: try to override the default issue token price with testnet definition to tidy code up

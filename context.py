@@ -3,8 +3,6 @@ from datetime import datetime
 
 import config
 from contracts.farm_contract import FarmContract
-from contracts.metastaking_contract import MetaStakingContract
-from contracts.pair_contract import PairContract
 from deploy.dex_structure import DeployStructure
 from utils.results_logger import ResultsLogger
 from utils.utils_tx import NetworkProviders
@@ -87,12 +85,6 @@ class Context:
             account_observer = FarmAccountEconomics(acc.address, self.network_provider)
             self.observable.subscribe(account_observer)
 
-        pair_contracts = self.deploy_structure.contracts[config.PAIRS].deployed_contracts
-        for contract in pair_contracts:
-            contract_dict = contract.get_config_dict()
-            observer = PairEconomics(contract_dict['address'], contract.firstToken, contract.secondToken, self.network_provider)
-            self.observable.subscribe(observer)
-
         staking_contracts = self.deploy_structure.contracts[config.STAKINGS].deployed_contracts
         for contract in staking_contracts:
             contract_dict = contract.get_config_dict()
@@ -121,14 +113,8 @@ class Context:
     def get_router_v2_contract(self, index: int):
         return self.deploy_structure.get_deployed_contract_by_index(config.ROUTER_V2, index)
 
-    def get_simple_lock_contract(self, index: int):
-        return self.deploy_structure.get_deployed_contract_by_index(config.SIMPLE_LOCKS, index)
-
     def get_pair_contract(self, index: int):
         return self.deploy_structure.get_deployed_contract_by_index(config.PAIRS, index)
-
-    def get_pair_v2_contract(self, index: int) -> PairContract:
-        return self.deploy_structure.get_deployed_contract_by_index(config.PAIRS_V2, index)
 
     def get_fee_collector_contract(self, index: int):
         return self.deploy_structure.get_deployed_contract_by_index(config.FEES_COLLECTORS, index)
@@ -164,12 +150,7 @@ class Context:
         return random.choice([random.choice(self.deploy_structure.get_deployed_contracts(config.FARMS_LOCKED)),
                              random.choice(self.deploy_structure.get_deployed_contracts(config.FARMS_UNLOCKED))])
 
-    def get_pair_contract_by_address(self, address: str) -> PairContract:
-        contract = self.deploy_structure.get_deployed_contract_by_address(config.PAIRS, address)
-        if contract is None:
-            contract = self.deploy_structure.get_deployed_contract_by_address(config.PAIRS_V2, address)
 
-        return contract
 
     def get_random_pair_contract(self):
         return random.choice(self.deploy_structure.get_deployed_contracts(config.PAIRS))
@@ -180,9 +161,6 @@ class Context:
 
     def get_random_price_discovery_contract(self):
         return random.choice(self.deploy_structure.get_deployed_contracts(config.PRICE_DISCOVERIES))
-
-    def get_random_metastaking_contract(self) -> MetaStakingContract:
-        return random.choice(self.deploy_structure.get_deployed_contracts(config.METASTAKINGS))
 
     def get_contract_index(self, contract_label: str, contract):
         return self.deploy_structure.get_deployed_contracts(contract_label).index(contract)

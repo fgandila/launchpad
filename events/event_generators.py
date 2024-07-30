@@ -4,22 +4,13 @@ import traceback
 
 import config
 from context import Context
-from contracts.dex_proxy_contract import (DexProxyAddLiquidityEvent, DexProxyClaimRewardsEvent,
-                                                            DexProxyCompoundRewardsEvent, DexProxyEnterFarmEvent,
-                                                            DexProxyExitFarmEvent, DexProxyRemoveLiquidityEvent)
 from contracts.farm_contract import FarmContract
 
-from contracts.metastaking_contract import MetaStakingContract
 from contracts.staking_contract import StakingContract
-from contracts.pair_contract import (AddLiquidityEvent, RemoveLiquidityEvent, SwapFixedInputEvent,
-                                                       SwapFixedOutputEvent, PairContract, SetCorrectReservesEvent)
-from contracts.price_discovery_contract import PriceDiscoveryContract
 from events.farm_events import (ClaimRewardsFarmEvent, CompoundRewardsFarmEvent, SetTokenBalanceEvent,
                                                   EnterFarmEvent, ExitFarmEvent, MigratePositionFarmEvent)
 from events.metastake_events import (EnterMetastakeEvent, ExitMetastakeEvent,
                                                        ClaimRewardsMetastakeEvent)
-from events.price_discovery_events import (DepositPDLiquidityEvent, RedeemPDLPTokensEvent,
-                                                             WithdrawPDLiquidityEvent)
 from utils.contract_data_fetchers import PairContractDataFetcher
 from utils.logger import get_logger
 from utils.results_logger import FarmEventResultLogData
@@ -803,143 +794,3 @@ def generateRandomExitFarmProxyEvent(context: Context):
     userAccount = context.get_random_user_account()
     farmContract = context.get_random_farm_contract()
     generateExitFarmProxyEvent(context, userAccount, farmContract)
-
-
-def generateClaimRewardsProxyEvent(context: Context, userAccount: Account, farmContract: FarmContract):
-
-    try:
-        farm_token = farmContract.proxyContract.farm_token
-        underlying_token = farmContract.farmToken
-
-        farm_tk_nonce, farm_tk_amount, _ = get_token_details_for_address(farm_token, userAccount.address,
-                                                                         context.network_provider.proxy, underlying_token)
-        if farm_tk_nonce == 0:
-            return
-
-        event = DexProxyClaimRewardsEvent(
-            farmContract, farm_token, farm_tk_nonce, farm_tk_amount
-        )
-        context.dexProxyContract.claimRewardsProxy(context, userAccount, event)
-
-    except Exception as ex:
-        print(ex)
-
-
-def generateRandomClaimRewardsProxyEvent(context: Context):
-    userAccount = context.get_random_user_account()
-    farmContract = context.get_random_farm_contract()
-    generateClaimRewardsProxyEvent(context, userAccount, farmContract)
-
-
-def generateCompoundRewardsProxyEvent(context: Context, userAccount: Account, farmContract: FarmContract):
-
-    try:
-        farm_token = farmContract.proxyContract.farm_token
-        underlying_token = farmContract.farmToken
-
-        farmTkNonce, farmTkAmount, _ = get_token_details_for_address(farm_token, userAccount.address,
-                                                                     context.network_provider.proxy, underlying_token)
-        if farmTkNonce == 0:
-            return
-
-        event = DexProxyCompoundRewardsEvent(
-            farmContract, farm_token, farmTkNonce, farmTkAmount
-        )
-        context.dexProxyContract.claimRewardsProxy(context, userAccount, event)
-
-    except Exception as ex:
-        print(ex)
-
-
-def generateRandomCompoundRewardsProxyEvent(context: Context):
-    userAccount = context.get_random_user_account()
-    farmContract = context.farms[len(context.farms) - 1]
-    generateCompoundRewardsProxyEvent(context, userAccount, farmContract)
-
-
-def generate_deposit_pd_liquidity_event(context: Context, user_account: Account, pd_contract: PriceDiscoveryContract):
-    tokens = [pd_contract.launched_token_id, pd_contract.accepted_token]
-    # TODO: find a smarter/more configurable method of choosing which token to use
-    # Option1: Based on account balance (after smart funds distribution e.g. 10% tokenA, 80% tokenB, 10%, mixed tokens)
-    random.shuffle(tokens)
-    deposited_token = tokens[0]
-
-    _, amount, _ = get_token_details_for_address(deposited_token, user_account.address, context.network_provider.proxy)
-    amount = random.randrange(amount)
-
-    event = DepositPDLiquidityEvent(deposited_token, amount)
-    tx_hash = pd_contract.deposit_liquidity(context.network_provider, user_account, event)
-
-    # track and check event results
-    # TODO: has to be reworked
-    # if hasattr(context, 'price_discovery_trackers'):
-    #     index = context.get_contract_index(config.PRICE_DISCOVERIES, pd_contract)
-    #     context.price_discovery_trackers[index].deposit_event_tracking(
-    #         event, user_account.address, tx_hash
-    #     )
-
-
-def generate_random_deposit_pd_liquidity_event(context: Context):
-    user_account = context.get_random_user_account()
-    pd_contract = context.get_random_price_discovery_contract()
-    generate_deposit_pd_liquidity_event(context, user_account, pd_contract)
-
-
-def generate_withdraw_pd_liquidity_event(context: Context, user_account: Account, pd_contract: PriceDiscoveryContract):
-    # TODO: find a smarter/more configurable method of choosing which token to use
-    tokens = get_all_token_nonces_details_for_account(pd_contract.redeem_token, user_account.address, context.network_provider.proxy)
-    if len(tokens) == 0:
-        log_step_fail(f"Generate withdraw price discovery liquidity failed! No redeem tokens available.")
-        return
-
-    random.shuffle(tokens)
-    deposit_token = tokens[0]
-    nonce = int(deposit_token['nonce'])
-    amount = random.randrange(int(deposit_token['balance']))
-
-    event = WithdrawPDLiquidityEvent(pd_contract.redeem_token, nonce, amount)
-    tx_hash = pd_contract.withdraw_liquidity(context.network_provider, user_account, event)
-
-    # track and check event results
-    # TODO: has to be reworked
-    # if hasattr(context, 'price_discovery_trackers'):
-    #     index = context.get_contract_index(config.PRICE_DISCOVERIES, pd_contract)
-    #     context.price_discovery_trackers[index].withdraw_event_tracking(
-    #         event, user_account.address, tx_hash
-    #     )
-
-
-def generate_random_withdraw_pd_liquidity_event(context: Context):
-    user_account = context.get_random_user_account()
-    pd_contract = context.get_random_price_discovery_contract()
-    generate_withdraw_pd_liquidity_event(context, user_account, pd_contract)
-
-
-def generate_redeem_pd_liquidity_event(context: Context, user_account: Account, pd_contract: PriceDiscoveryContract):
-    # TODO: find a smarter/more configurable method of choosing which token to use and how much
-    tokens = get_all_token_nonces_details_for_account(pd_contract.redeem_token, user_account.address, context.network_provider.proxy)
-    if len(tokens) == 0:
-        log_step_fail(f"Generate redeem price discovery liquidity failed! No redeem tokens available.")
-        return
-
-    random.shuffle(tokens)
-    deposit_token = tokens[0]
-    nonce = int(deposit_token['nonce'])
-    amount = random.randrange(int(deposit_token['balance']))
-
-    event = RedeemPDLPTokensEvent(pd_contract.redeem_token, nonce, amount)
-    tx_hash = pd_contract.redeem_liquidity_position(context.network_provider, user_account, event)
-
-    # track and check event results
-    # TODO: has to be reworked
-    # if hasattr(context, 'price_discovery_trackers'):
-    #     index = context.get_contract_index(config.PRICE_DISCOVERIES, pd_contract)
-    #     context.price_discovery_trackers[index].redeem_event_tracking(
-    #         event, user_account.address, tx_hash
-    #     )
-
-
-def generate_random_redeem_pd_liquidity_event(context: Context):
-    user_account = context.get_random_user_account()
-    pd_contract = context.get_random_price_discovery_contract()
-    generate_redeem_pd_liquidity_event(context, user_account, pd_contract)

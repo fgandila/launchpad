@@ -15,7 +15,7 @@ with open("config_file.yaml", "r") as file:
 test_address = Address.from_bech32(config["signingWalletAddress"])
 
 # Network provider
-provider = ProxyNetworkProvider("https://proxy-shadowfork-three.elrond.ro")
+provider = ProxyNetworkProvider(config["defaultPROXY"])
 
 # Get account for the signing wallet
 test_account = provider.get_account(test_address)

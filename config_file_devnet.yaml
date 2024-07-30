@@ -1,0 +1,14 @@
+defaultAPI: https://devnet-api.multiversx.com
+defaultPROXY: https://devnet-gateway.multiversx.com
+deployedGuildAddress: erd1qqqqqqqqqqqqqpgqvz67kj60elu7qc93gjcslgnh4ylac9dckg2smvafw3
+divisionSafetyConstant: 10000000000000000000
+farmingToken: TESTUTK-cdbafa
+guildConfigBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-sc-config.wasm
+guildConfigScAddressModel: erd1qqqqqqqqqqqqqpgqs4zg4qmr7gxr9f25xupc8jacla7c2ff4kg2sast7ek
+guildFactoryBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-factory.wasm
+guildFactoryScAddress: erd1qqqqqqqqqqqqqpgqvwywktphcnuugnn4wrk2j6jmhrtmyr9tkg2suy60ha
+guildSCBYTEPATH: /home/multiversx/Documents/guilds_py/wasm/guild-sc.wasm
+guildScAddressModel: erd1qqqqqqqqqqqqqpgqvhj4gzat8sdpu66dsme8khutrh4rxv20kg2s966ynx
+perBlockRewardAmount: 40000000000000000
+signingWalletAddress: erd1a2x0azarwsag9svwdn23pjramat7zcjceqd44yh4g7jx4pugkg2s3jwlel
+signingWalletPemPath: ./defi-wallet.pem
