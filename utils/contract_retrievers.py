@@ -9,9 +9,9 @@ import config
 from contracts.router_contract import RouterContract
 from contracts.staking_contract import StakingContract
 from contracts.unstaker_contract import UnstakerContract
-from utils.contract_data_fetchers import GuildContractDataFetcher, PairContractDataFetcher, \
-    FarmContractDataFetcher, SimpleLockEnergyContractDataFetcher, StakingContractDataFetcher, \
-    MetaStakingContractDataFetcher, ProxyContractDataFetcher, LockedAssetContractDataFetcher
+from utils.contract_data_fetchers import GuildContractDataFetcher, \
+    FarmContractDataFetcher, StakingContractDataFetcher, \
+    ProxyContractDataFetcher, LockedAssetContractDataFetcher
 from utils.utils_chain import hex_to_string, WrapperAddress as Address
 
 

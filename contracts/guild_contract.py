@@ -166,14 +166,14 @@ class GuildContract(BaseFarmContract, BaseBoostedContract):
         return multi_esdt_endpoint_call(function_purpose, network_provider.proxy, gas_limit, user,
                                         Address(self.address), "migratePosition", sc_args)
     
-    def calculateRewardsForUser(self, network_provider: NetworkProviders, user: Account, amount: int, attr: list):
+    def calculateRewardsForUser(self, network_provider: NetworkProviders, user: Account, amount: int, attr: list = []):
         fn = 'calculateRewardsForGivenPosition'
         logger.info(f"{fn}")
         logger.debug(f"Account: {user.address}")
         sc_args = [
             user.address,
             amount,  
-            0          
+            attr          
         ]
 
 

@@ -9,9 +9,9 @@ from contracts.fees_collector_contract import FeesCollectorContract
 from contracts.unstaker_contract import UnstakerContract
 from deploy import sync_tokens, issue_tokens
 from deploy.tokens_tracks import BunchOfTracks
-from utils.contract_data_fetchers import LkWrapContractDataFetcher, PairContractDataFetcher, PriceDiscoveryContractDataFetcher, \
-    SimpleLockContractDataFetcher, LockedAssetContractDataFetcher, FarmContractDataFetcher, StakingContractDataFetcher, \
-    MetaStakingContractDataFetcher, ProxyContractDataFetcher, SimpleLockEnergyContractDataFetcher
+from utils.contract_data_fetchers import PriceDiscoveryContractDataFetcher, \
+    LockedAssetContractDataFetcher, FarmContractDataFetcher, StakingContractDataFetcher, \
+    ProxyContractDataFetcher
 from contracts.builtin_contracts import ESDTContract
 from contracts.farm_contract import FarmContract
 from contracts.router_contract import RouterContract
@@ -62,20 +62,6 @@ class ContractStructure:
             contracts_list.append(contract)
 
         return contracts_list
-
-    def get_deployed_contract_by_address(self, address: str) -> DEXContractInterface or None:
-        found_contract = None
-        for contract in self.deployed_contracts:
-            if contract.address == address:
-                found_contract = contract
-                break
-
-        return found_contract
-
-    def get_deployed_contract_by_index(self, index: int) -> DEXContractInterface or None:
-        if index+1 > len(self.deployed_contracts):
-            return None
-        return self.deployed_contracts[index]
 
     def load_deployed_contracts(self):
         contracts_list = self.get_saved_deployed_contracts()
@@ -263,12 +249,6 @@ class DeployStructure:
 
     def get_deployed_contracts(self, label: str):
         return self.contracts[label].deployed_contracts
-
-    def get_deployed_contract_by_index(self, label: str, index: int):
-        return self.contracts[label].get_deployed_contract_by_index(index)
-
-    def get_deployed_contract_by_address(self, label: str, address: str):
-        return self.contracts[label].get_deployed_contract_by_address(address)
 
     # CONTRACT DEPLOYERS ------------------------------
     def staking_deploy(self, contracts_index: str, deployer_account: Account, network_providers: NetworkProviders):

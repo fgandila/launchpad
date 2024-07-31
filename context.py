@@ -7,9 +7,6 @@ from deploy.dex_structure import DeployStructure
 from utils.results_logger import ResultsLogger
 from utils.utils_tx import NetworkProviders
 from trackers.farm_economics_tracking import FarmEconomics, FarmAccountEconomics
-from trackers.pair_economics_tracking import PairEconomics
-from trackers.staking_economics_tracking import StakingEconomics
-from trackers.metastaking_economics_tracking import MetastakingEconomics
 from trackers.concrete_observer import Observable
 from utils.utils_chain import Account, BunchOfAccounts, WrapperAddress as Address
 
@@ -84,21 +81,6 @@ class Context:
         for acc in self.accounts.get_all():
             account_observer = FarmAccountEconomics(acc.address, self.network_provider)
             self.observable.subscribe(account_observer)
-
-        staking_contracts = self.deploy_structure.contracts[config.STAKINGS].deployed_contracts
-        for contract in staking_contracts:
-            contract_dict = contract.get_config_dict()
-            observer = StakingEconomics(contract_dict['address'], self.network_provider)
-            self.observable.subscribe(observer)
-
-        metastaking_contracts = self.deploy_structure.contracts[config.METASTAKINGS].deployed_contracts
-        for contract in metastaking_contracts:
-            contract_dict = contract.get_config_dict()
-            farm_contract = self.get_farm_contract_by_address(contract_dict['farm_address'])
-            pair_contract = self.get_pair_contract_by_address(contract_dict['lp_address'])
-            observer = MetastakingEconomics(contract_dict['address'], contract_dict['stake_address'],
-                                            farm_contract, pair_contract, self.network_provider)
-            self.observable.subscribe(observer)
 
     def get_slippaged_below_value(self, value: int):
         return value - int(value * self.pair_slippage)
