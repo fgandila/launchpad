@@ -142,17 +142,3 @@ class d:
 
 def top_dec_hex(hex_str: bytes, decoder: Decoder):
     return decoder.top_decode(ByteReader(bytes.fromhex(hex_str)))
-
-
-# decoded = top_dec_hex(
-#     "000000030c0d0e00000007626f6e6a6f7572000000010c",
-#     d.Tuple({
-#         "a": d.List(d.U8()),
-#         "b": d.Tuple({
-#             "a": d.Str(),
-#             "b": d.U(),
-#         })
-#     }),
-# )
-# print(decoded)
-# # Output: {'a': [12, 13, 14], 'b': {'a': 'bonjour', 'b': 12}}

@@ -1,5 +1,8 @@
 ipykernel
+ipytest
 toml
 debugpy
-pyyaml
-multiversx-sdk==0.10.0
+wget
+multiversx-sdk==1.0.0
+multiversx-sdk-cli==9.11.0
+pytest-yaml

@@ -80,36 +80,6 @@ class DataFetcher:
                 logger.debug(f"Response content: {result.to_dictionary()}")
         return []
 
-
-class LockedAssetContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getLockedAssetTokenId": self._get_hex_view,
-            "getAssetTokenId": self._get_hex_view,
-        }
-
-
-class ProxyContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getWrappedLpTokenId": self._get_hex_view,
-            "getWrappedFarmTokenId": self._get_hex_view,
-            "getAssetTokenId": self._get_hex_view,
-            "getLockedTokenIds": self._get_hex_list_view,
-        }
-
-
-class RouterContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getAllPairsManagedAddresses": self._get_hex_list_view,
-            "getPairTemplateAddress": self._get_hex_view
-        }
-
-
 class PriceDiscoveryContractDataFetcher(DataFetcher):
     def __init__(self, contract_address: Address, proxy_url: str):
         super().__init__(contract_address, proxy_url)
@@ -125,180 +95,6 @@ class PriceDiscoveryContractDataFetcher(DataFetcher):
     def get_token_reserve(self, token_ticker: str) -> int:
         data = self.proxy.get_fungible_token_of_account(self.contract_address, token_ticker)
         return data.balance
-
-
-class FarmContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getFarmTokenSupply": self._get_int_view,
-            "getFarmingTokenReserve": self._get_int_view,
-            "getLastRewardBlockNonce": self._get_int_view,
-            "getPerBlockRewardAmount": self._get_int_view,
-            "getRewardPerShare": self._get_int_view,
-            "getRewardReserve": self._get_int_view,
-            "getUndistributedFees": self._get_int_view,
-            "getCurrentBlockFee": self._get_int_view,
-            "getDivisionSafetyConstant": self._get_int_view,
-            "getFarmTokenId": self._get_hex_view,
-            "getFarmingTokenId": self._get_hex_view,
-            "getRewardTokenId": self._get_hex_view,
-            "getState": self._get_int_view,
-            "getPairContractManagedAddress": self._get_hex_view,
-            "getUserTotalFarmPosition": self._get_hex_view,
-            "getCurrentWeek": self._get_int_view,            
-            "getFirstWeekStartEpoch": self._get_int_view,
-            "getLastGlobalUpdateWeek": self._get_int_view,
-            "getUserEnergyForWeek": self._get_hex_view,
-            "getLastActiveWeekForUser": self._get_int_view,
-            "getCurrentClaimProgress": self._get_hex_view,
-            "getFarmSupplyForWeek": self._get_int_view,
-            "getTotalLockedTokensForWeek": self._get_int_view,
-            "getTotalEnergyForWeek": self._get_int_view,
-            "getTotalRewardsForWeek": self._get_int_view,
-            "getRemainingBoostedRewardsToDistribute": self._get_int_view,
-            "getUndistributedBoostedRewards": self._get_int_view,
-            "getPermissions": self._get_int_view,
-        }
-
-
-class StakingContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getFarmTokenSupply": self._get_int_view,
-            "getLastRewardBlockNonce": self._get_int_view,
-            "getPerBlockRewardAmount": self._get_int_view,
-            "getAnnualPercentageRewards": self._get_int_view,
-            "getRewardCapacity": self._get_int_view,
-            "getRewardReserve": self._get_int_view,
-            "getAccumulatedRewards": self._get_int_view,
-            "getRewardPerShare": self._get_int_view,
-            "getMinUnbondEpochs": self._get_int_view,
-            "getDivisionSafetyConstant": self._get_int_view,
-            "getFarmTokenId": self._get_hex_view,
-            "getFarmingTokenId": self._get_hex_view,
-            "getState": self._get_int_view,
-            "getUserTotalFarmPosition": self._get_hex_view,
-            "getCurrentWeek": self._get_int_view,            
-            "getFirstWeekStartEpoch": self._get_int_view,
-            "getLastGlobalUpdateWeek": self._get_int_view,
-            "getUserEnergyForWeek": self._get_hex_view,
-            "getLastActiveWeekForUser": self._get_int_view,
-            "getCurrentClaimProgress": self._get_hex_view,
-            "getFarmSupplyForWeek": self._get_int_view,
-            "getTotalLockedTokensForWeek": self._get_int_view,
-            "getTotalEnergyForWeek": self._get_int_view,
-            "getTotalRewardsForWeek": self._get_int_view,
-            "getRemainingBoostedRewardsToDistribute": self._get_int_view,
-            "getUndistributedBoostedRewards": self._get_int_view,
-            "getPermissions": self._get_int_view,
-        }
-
-
-class LiquidLockingContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "lockedTokenAmounts": self._get_hex_view,
-            "unlockedTokenAmounts": self._get_hex_view,
-            "lockedTokens": self._get_hex_list_view,
-            "unlockedTokens": self._get_hex_list_view,
-            "whitelistedTokens": self._get_hex_list_view,
-            "unbondPeriod": self._get_int_view
-        }
-
-
-class BaseFarmContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getFarmTokenSupply": self._get_int_view,
-            "getLastRewardBlockNonce": self._get_int_view,
-            "getPerBlockRewardAmount": self._get_int_view,
-            "getRewardReserve": self._get_int_view,
-            "getRewardPerShare": self._get_int_view,
-            "getDivisionSafetyConstant": self._get_int_view,
-            "getFarmTokenId": self._get_hex_view,
-            "getFarmingTokenId": self._get_hex_view,
-            "getState": self._get_int_view
-        }
-
-
-class BaseBoostedContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getCurrentWeek": self._get_int_view,            
-            "getFirstWeekStartEpoch": self._get_int_view,
-            "getLastGlobalUpdateWeek": self._get_int_view,
-            "getUserTotalFarmPosition": self._get_hex_view,
-            "getUserEnergyForWeek": self._get_hex_view,
-            "getLastActiveWeekForUser": self._get_int_view,
-            "getCurrentClaimProgress": self._get_hex_view,
-            "getFarmSupplyForWeek": self._get_int_view,
-            "getTotalLockedTokensForWeek": self._get_int_view,
-            "getTotalEnergyForWeek": self._get_int_view,
-            "getTotalRewardsForWeek": self._get_int_view,
-            "getRemainingBoostedRewardsToDistribute": self._get_int_view,
-            "getUndistributedBoostedRewards": self._get_int_view,
-        }
-
-class GuildContractDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getUserStakedTokens": self._get_hex_view,      
-            "getUnbondTokenId": self._get_hex_view,            
-            "getPermissions": self._get_hex_view,
-            "getDivisionSafetyConstant": self._get_int_view,
-            "get LastRewardBlockNonce": self._get_int_view,
-            "getRewardTokenId": self._get_hex_view,
-            "getPerBlockRewardAmount": self._get_int_view,
-            "getRewardTokenId": self._get_hex_view,
-            "getFarmingTokenId": self._get_hex_view,
-            "getRewardReserve": self._get_int_view,
-            "getUserRewardPerShare": self._get_int_view,
-            "getGuildMasterRewardPerShare": self._get_int_view,
-            "getRewardsCapacity": self._get_int_view,
-            "getAccumulatedRewards": self._get_int_view,
-            "getState": self._get_int_view,
-            "getFarmTokenId": self._get_hex_view,
-            "getFarmTokenSupply": self._get_int_view,
-        }
-        
-class GuildFactoryDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getAdmins": self._get_hex_view,      
-            "getConfigAddress": self._get_hex_view,            
-            "getRemainingRewards": self._get_int_view,
-            "getAllGuilds": self._get_hex_view,
-            "getGuildId": self._get_hex_view,
-            "getClosedGuilds": self._get_hex_view,
-        }
-
-class GuildConfigDataFetcher(DataFetcher):
-    def __init__(self, contract_address: Address, proxy_url: str):
-        super().__init__(contract_address, proxy_url)
-        self.view_handler_map = {
-            "getGuildMasterTiers": self._get_hex_view,      
-            "getUserTiers": self._get_hex_view,            
-            "getMaxStakedTokens": self._get_int_view,
-            "getMinUnboundEpochsUser": self._get_int_view,
-            "getMinUnboundEpochsGuildMaster": self._get_int_view,
-            "getMinStakeUser": self._get_int_view,
-            "getMinStakeGuildMaster": self._get_int_view,
-            "getTotalStakingTokenMinted": self._get_int_view,
-            "getTotalStakingTokenStaked": self._get_int_view,
-            "getBaseFarmTokenId": self._get_hex_view,
-            "getBaseUnbondTokenId": self._get_hex_view,
-            "getBaseTokenDisplayName": self._get_hex_view,
-            "getTokenDecimals": self._get_hex_view,
-            "getSecondsPerBlock": self._get_hex_view,
-            "getPerBlockRewardAmount": self._get_int_view,
-        }
 
 class ChainDataFetcher:
     def __init__(self, proxy_url: str):
@@ -325,3 +121,28 @@ class ChainDataFetcher:
             print("Exception encountered:", ex)
             traceback.print_exception(*sys.exc_info())
             return 0
+
+class LaunchpadContractDataFetcher(DataFetcher):
+    def __init__(self, contract_address: Address, proxy_url: str):
+        super().__init__(contract_address, proxy_url)
+        self.view_handler_map = {
+            "getNumberOfConfirmedTicketsForAddress": self._get_int_view,      
+            "getTotalNumberOfTicketsForAddress": self._get_int_view,            
+            "getTotalNumberOfTickets": self._get_int_view,
+            "getTicketRangeForAddress": self._get_hex_view,
+            "getNumberOfWinningTickets": self._get_int_view,
+            "getTicketPrice": self._get_hex_view,
+            "getConfiguration": self._get_hex_view,
+            "getLaunchpadTokenId": self._get_hex_view,
+            "getLaunchStageFlags": self._get_hex_view,
+            "getUserTicketsStatus": self._get_hex_view,
+            "getUnlockSchedule": self._get_hex_view,
+            "getUserClaimedBalance": self._get_int_view,
+            "getUserTotalClaimableBalance": self._get_int_view,
+            "getClaimableTokens": self._get_int_view,
+            "hasUserClaimedTokens": self._get_hex_view,
+        }
+
+    def get_token_reserve(self, token_ticker: str) -> int:
+        data = self.proxy.get_fungible_token_of_account(self.contract_address, token_ticker)
+        return data.balance

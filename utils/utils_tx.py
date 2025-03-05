@@ -19,10 +19,12 @@ from multiversx_sdk.network_providers.transaction_status import \
     TransactionStatus
 from multiversx_sdk.network_providers.transactions import TransactionOnNetwork
 
+from config import PROXY_CHAIN_SIMULATOR
 from utils.logger import get_logger
-from utils.utils_chain import Account, WrapperAddress, log_explorer_transaction
+from utils.utils_chain import Account, WrapperAddress, base64_to_hex, log_explorer_transaction
 from utils.utils_generic import (get_continue_confirmation, log_step_fail,
                                  log_unexpected_args, split_to_chunks)
+import requests
 
 TX_CACHE: Dict[str, dict] = {}
 logger = get_logger(__name__)
@@ -418,7 +420,7 @@ def multi_esdt_endpoint_call(function_purpose: str, proxy: ProxyNetworkProvider,
         opt: type[str..]: endpoint arguments
     """
     logger.debug(function_purpose)
-    network_config = proxy.get_network_config()     # TODO: find solution to avoid this call
+    network_config = proxy.get_network_config()    # TODO: find solution to avoid this call
     tx_hash = ""
 
     if len(args) < 1:
@@ -541,7 +543,7 @@ def get_event_from_tx(event_id: str, tx_hash: str, proxy: ProxyNetworkProvider) 
 
 
 def get_deployed_address_from_tx(tx_hash: str, proxy: ProxyNetworkProvider) -> str:
-    event = get_event_from_tx("SCDeploy", tx_hash, proxy)
+    event = get_event_from_tx("scDeploy", tx_hash, proxy)
     if event is None:
         return ""
     return event.address.to_bech32()
@@ -571,3 +573,21 @@ def broadcast_transactions(transactions: List[Transaction], proxy: ProxyNetworkP
 
     logger.debug(f"Hashes: {hashes}")
     return hashes
+
+
+def get_contract_address_from_tx(tx_hash):
+    response = requests.get(f"{PROXY_CHAIN_SIMULATOR}/transaction/{tx_hash}?withResults=True")
+    response.raise_for_status()
+    parsed = response.json()
+
+    general_data = parsed.get("data")
+    transaction_data = general_data.get("transaction")
+    logs_data = transaction_data.get("logs")
+    events_data = logs_data.get("events")
+    first_set_of_events = events_data[0]
+    topics = first_set_of_events.get("topics")
+    deployed_contract_address = topics[0]
+
+    deployed_contract_address = base64_to_hex(deployed_contract_address)
+    deployed_contract_address = Address.from_hex(deployed_contract_address, "erd").to_bech32()
+    return deployed_contract_address
