@@ -81,8 +81,8 @@ def main(cli_args: List[str]):
     # print(f"\nTarget block: {target_block}")
     print(f"Target time: {td_timestamp}")
 
-    return target_block, target_round, td_timestamp
+    return target_block, target_round, td_timestamp, block_timestamp
 
-
+    
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -18,9 +18,9 @@ HISTORY_PROXY = ""                                                          # Pr
 DEFAULT_ISSUE_TOKEN_PRICE = 50000000000000000                               # 0.05 EGLD - change only if different setup on nets
 
 # Operation wallets
-DEFAULT_ACCOUNTS = DEFAULT_WORKSPACE.absolute() / "defi-wallet.pem"       # Accounts to be used for user operations
-DEFAULT_OWNER = DEFAULT_WORKSPACE.absolute() / "wallet1.pem"         # DEX owner address
-DEFAULT_ADMIN = DEFAULT_WORKSPACE.absolute() / "wallet2.pem"         # DEX admin address
+DEFAULT_ACCOUNTS = DEFAULT_WORKSPACE.absolute() / "wallets" / "wallet1.pem"     # Accounts to be used for user operations
+DEFAULT_OWNER = DEFAULT_WORKSPACE.absolute() / "wallets" / "deployer.pem"         # DEX owner address
+DEFAULT_ADMIN = DEFAULT_WORKSPACE.absolute() / "wallets" / "wallet2.pem"         # DEX admin address
 DEX_OWNER_ADDRESS = "erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97"  # Only needed for shadowforks
 DEX_ADMIN_ADDRESS = "erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97"  # Only needed for shadowforks
 OWNER_SHARD = "1"

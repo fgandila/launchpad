@@ -136,6 +136,42 @@ class PriceDiscoveryContract(DEXContractInterface):
         sc_args = [tokens]
         return multi_esdt_endpoint_call(function_purpose, proxy, gas_limit, user,
                                         Address.from_bech32(self.address), "userWithdraw", sc_args)
+  
+    def user_withdraw_new(self,proxy: ProxyNetworkProvider, user: Account, amount: str) -> str:
+        function_purpose = f"Withdraw accepted token"
+        logger.info(function_purpose)
+        logger.debug(f"Account: {user.address}")
+        logger.debug(f"Amount: {amount}")
+
+        gas_limit = 10000000
+        # tokens = []
+        sc_args = [amount]
+        return endpoint_call(proxy, gas_limit, user,
+                                        Address.from_bech32(self.address), "userWithdraw", sc_args)
+    
+    def set_user_deposit_withdraw_time(self,proxy: ProxyNetworkProvider, user: Account, offset: str) -> str:
+        function_purpose = f"Set user phase end time"
+        logger.info(function_purpose)
+
+        gas_limit = 10000000
+        sc_args = [
+            offset
+            ]
+
+        return endpoint_call(proxy, gas_limit, user,
+                                        Address.from_bech32(self.address), "setUserDepositWithdrawTime", sc_args)
+    
+    def set_owner_deposit_withdraw_time(self,proxy: ProxyNetworkProvider, user: Account, offset: str) -> str:
+        function_purpose = f"Set owner phase end time"
+        logger.info(function_purpose)
+
+        gas_limit = 10000000
+        sc_args = [
+            offset
+            ]
+
+        return endpoint_call(proxy, gas_limit, user,
+                                        Address.from_bech32(self.address), "setOwnerDepositWithdrawTime", sc_args)
 
     def redeem_liquidity_position(self, proxy: ProxyNetworkProvider, user: Account, event: RedeemPDLPTokensEvent) -> str:
         function_purpose = f"Redeem Price Discovery liquidity"
@@ -149,6 +185,17 @@ class PriceDiscoveryContract(DEXContractInterface):
         return multi_esdt_endpoint_call(function_purpose, proxy, gas_limit, user,
                                         Address.from_bech32(self.address), "redeem", sc_args)
     
+    def user_redeem(self, proxy: ProxyNetworkProvider, user: Account) -> str:
+        function_purpose = f"Redeem tokens"
+        logger.info(function_purpose)
+        logger.debug(f"Account: {user.address}")
+        # logger.debug(f"Amount: {amount}")
+
+        gas_limit = 10000000
+        sc_args = []
+
+        return endpoint_call(proxy, gas_limit, user, Address.from_bech32(self.address), "redeem", sc_args)
+
     def owner_redeem(self, proxy: ProxyNetworkProvider, user: Account, event: RedeemPDLPTokensEvent) -> str:
         function_purpose = f"Redeem Price Discovery liquidity"
         logger.info(function_purpose)
@@ -156,7 +203,6 @@ class PriceDiscoveryContract(DEXContractInterface):
         logger.debug(f"Token: {event.deposit_lp_token} Nonce: {event.nonce} Amount: {event.amount}")
 
         gas_limit = 10000000
-        tokens = [ESDTToken(event.deposit_lp_token, event.nonce, event.amount)]
         sc_args = []
 
         return endpoint_call(proxy, gas_limit, user, Address.from_bech32(self.address), "redeem", sc_args)
